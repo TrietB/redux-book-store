@@ -3,49 +3,44 @@ import { ClipLoader } from "react-spinners";
 import { useNavigate } from "react-router-dom";
 import PaginationBar from "../components/PaginationBar";
 import SearchForm from "../components/SearchForm";
-import api from "../apiService";
 import { FormProvider } from "../form";
 import { useForm } from "react-hook-form";
 import { Container, Alert, Box, Card, Stack, CardMedia, CardActionArea, Typography, CardContent } from "@mui/material";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { fetchData } from "../features/bookSlice";
 
 
 
 const BACKEND_API = process.env.REACT_APP_BACKEND_API;
 
 const HomePage = () => {
-  const [books, setBooks] = useState([]);
+  // const [books, setBooks] = useState([]);
   const [pageNum, setPageNum] = useState(1);
+  const [query, setQuery] = useState("");
   const totalPage = 10;
   const limit = 10;
 
-  const [loading, setLoading] = useState(false);
-  const [query, setQuery] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
-
+  const dispatch = useDispatch()
   const navigate = useNavigate()
+  
   const handleClickBook = (bookId) => {
     navigate(`/books/${bookId}`);
   };
+  
+  const books = useSelector((state)=> state.book.books)
 
+  const status = useSelector((state) => state.book.status)
 
 
 
   useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      try {
-        let url = `/books?_page=${pageNum}&_limit=${limit}`;
-        if (query) url += `&q=${query}`;
-        const res = await api.get(url);
-        setBooks(res.data);
-        setErrorMessage("");
-      } catch (error) {
-        setErrorMessage(error.message);
-      }
-      setLoading(false);
-    };
-    fetchData();
-  }, [pageNum, limit, query]);
+    dispatch(fetchData({ pageNum, limit: 20, query }));
+    console.log("qury", query);
+  }, [dispatch, pageNum, limit, query]);
+
+
+  
   //--------------form
   const defaultValues = {
     searchQuery: ""
@@ -61,7 +56,7 @@ const HomePage = () => {
     <Container>
       <Stack sx={{ display: "flex", alignItems: "center", m: "2rem" }}>
         <Typography variant="h3" sx={{ textAlign: "center" }}>Book Store</Typography>
-        {errorMessage && <Alert severity="danger">{errorMessage}</Alert>}
+        {status && <Alert severity="success">{status}</Alert>}
         <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
           <Stack
             spacing={2}
@@ -80,7 +75,7 @@ const HomePage = () => {
         />
       </Stack>
       <div>
-        {loading ? (
+        {status === 'loading' ? (
           <Box sx={{ textAlign: "center", color: "primary.main" }} >
             <ClipLoader color="inherit" size={150} loading={true} />
           </Box>

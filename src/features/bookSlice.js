@@ -8,7 +8,7 @@ const initialState = {
     books: [],
     readingList: [],
     bookDetail: null,
-    status: '',
+    status: null,
 
 }
 
@@ -34,7 +34,6 @@ export const getBookDetail = createAsyncThunk(
     async (bookId) => {
         try {
             const response = await api.get(`/books/${bookId}`);
-            console.log(response)
             return response.data
           } 
         catch (error) {
@@ -45,10 +44,8 @@ export const getBookDetail = createAsyncThunk(
 export const addToReadingList = createAsyncThunk(
     'book/addToReadingList',
     async (bookDetail) => {
-       
-            const response = await api.post('/favorites', bookDetail)
-            return response.data
-     
+        const response = await api.post('/favorites', bookDetail)
+        return response.data
     }
 )
 export const removeBook = createAsyncThunk(
@@ -60,15 +57,10 @@ export const removeBook = createAsyncThunk(
 )
 
 export const getReadingList = createAsyncThunk(
-    'book/favorites',
+    'book/getReadingList',
     async () => {
-        try{
-            const response = await api.get('/favorites')
-            return response.data
-        }
-        catch(error){
-            console.log(error.message)
-        }
+        const response = await api.get('/favorites')
+        return response.data
     }
 )
 
@@ -97,7 +89,9 @@ const bookSlice = createSlice({
         .addCase(getBookDetail.rejected, (state)=>{
             state.status = 'failed'
         })
-        builder.addCase(addToReadingList.pending, (state)=>{})
+        builder.addCase(addToReadingList.pending, (state)=>{
+            state.status = 'loading'
+        })
         .addCase(addToReadingList.fulfilled, (state, action) => {
             state.status= 'success'
             state.readingList = action.payload
@@ -113,7 +107,7 @@ const bookSlice = createSlice({
         })
         .addCase(removeBook.fulfilled, (state, action) => {
             state.status = 'completed'
-            state.readingList = action.payload
+            // state.readingList = action.payload
             toast.success('Removed')
         })
         .addCase(removeBook.rejected, (state , action) => {

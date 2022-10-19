@@ -2,15 +2,13 @@ import React, { useState, useEffect } from "react";
 import { Container, Button, Box, Card, Stack, CardMedia, CardActionArea, Typography, CardContent } from "@mui/material";
 import { ClipLoader } from "react-spinners";
 import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
-import api from "../apiService";
 import { useDispatch, useSelector } from "react-redux";
 import { getReadingList, removeBook } from "../features/bookSlice";
 
 const BACKEND_API = process.env.REACT_APP_BACKEND_API;
 
 const ReadingPage = () => {
-  const [removedBookId, setRemovedBookId] = useState("");
+  const [removedBookId, setRemovedBookId] = useState('');
   const status = useSelector((state) => state.book.status)
   const readingList = useSelector((state) => state.book.readingList)
   
@@ -25,20 +23,18 @@ const ReadingPage = () => {
     setRemovedBookId(bookId);
   };
 
-
-  console.log(readingList)
+  console.log(removedBookId)
   useEffect(() => {
-    
+    if(removedBookId) return
     dispatch(getReadingList())
-  }, []);
+  }, [dispatch, removedBookId]);
 
   useEffect(() => {
     if(!removedBookId) return;
     dispatch(removeBook(removedBookId))
     setRemovedBookId('')
-  }, [dispatch,removedBookId]);
+  }, [dispatch, removedBookId]);
   
-  console.log(readingList)
 
  
   return (
@@ -50,7 +46,7 @@ const ReadingPage = () => {
         </Box>
       ) : (
         <Stack direction="row" spacing={2} justifyContent="space-around" flexWrap={"wrap"}>
-          {readingList?.map((book) => (
+          {status === 'completed' && readingList?.map((book) => (
             <Card
               key={book.id}
               sx={{
@@ -79,7 +75,7 @@ const ReadingPage = () => {
                       padding: "0", minWidth: "1.5rem"
                     }}
                     size="small"
-                    onClick={() => selectBook(book.id)}
+                    onClick={() => setRemovedBookId(book.id)}
                   >
                     &times;
                   </Button>

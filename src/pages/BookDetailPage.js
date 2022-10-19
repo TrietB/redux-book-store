@@ -20,7 +20,6 @@ const BookDetailPage = () => {
   const params = useParams();
   const bookId = params.id;
 
-  console.log(bookDetail)
   useEffect(() => {
     dispatch(getBookDetail(bookId))
   }, [dispatch, bookId]);

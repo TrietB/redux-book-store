@@ -19,9 +19,6 @@ const ReadingPage = () => {
     navigate(`/books/${bookId}`);
   };
 
-  const selectBook = (bookId) => {
-    setRemovedBookId(bookId);
-  };
 
   console.log(removedBookId)
   useEffect(() => {

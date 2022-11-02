@@ -51,7 +51,7 @@ const ReadingPage = () => {
                 height: "27rem",
                 marginBottom: "2rem",
               }}>
-              <CardActionArea>
+              <CardActionArea component='span'>
                 <CardMedia
                   component="img"
                   image={`${BACKEND_API}/${book.imageLink}`}

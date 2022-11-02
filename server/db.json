@@ -1,5 +1,39 @@
 {
-  "favorites": [],
+  "favorites": [
+    {
+      "author": "Unknown",
+      "country": "Achaemenid Empire",
+      "imageLink": "images/the-book-of-job.jpg",
+      "language": "Hebrew",
+      "link": "https://en.wikipedia.org/wiki/Book_of_Job\n",
+      "pages": 176,
+      "title": "The Book Of Job",
+      "year": -600,
+      "id": "69811EF5E04"
+    },
+    {
+      "author": "Jane Austen",
+      "country": "United Kingdom",
+      "imageLink": "images/pride-and-prejudice.jpg",
+      "language": "English",
+      "link": "https://en.wikipedia.org/wiki/Pride_and_Prejudice\n",
+      "pages": 226,
+      "title": "Pride and Prejudice",
+      "year": 1813,
+      "id": "52B864C4007"
+    },
+    {
+      "author": "Unknown",
+      "country": "India/Iran/Iraq/Egypt/Tajikistan",
+      "imageLink": "images/one-thousand-and-one-nights.jpg",
+      "language": "Arabic",
+      "link": "https://en.wikipedia.org/wiki/One_Thousand_and_One_Nights\n",
+      "pages": 288,
+      "title": "One Thousand and One Nights",
+      "year": 1200,
+      "id": "BFECD288E75"
+    }
+  ],
   "books": [
     {
       "author": "Chinua Achebe",

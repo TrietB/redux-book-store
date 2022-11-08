@@ -3,6 +3,7 @@ import { toast } from "react-toastify";
 
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import api from "../apiService";
+import { fetchBooks } from "./bookAPI";
 
 const initialState = {
     books: [],
@@ -14,20 +15,10 @@ const initialState = {
 
 
 
-export const fetchData = createAsyncThunk(
-    'book/fetchData',
-    async ({pageNum, query, limit})=> {
-        try{
-            let url = `/books?_page=${pageNum}&_limit=${limit}`;
-            if (query) url += `&q=${query}`;
-            const response = await api.get(url);
-            return response.data
-        }
-        catch(error){
-            return error.message
-        }
-    }
-)
+export const fetchData = createAsyncThunk("book/fetchData", async (props) => {
+    const response = await fetchBooks(props);
+    return response.data;
+  });
 
 export const getBookDetail = createAsyncThunk(
     'book/bookDetail',
@@ -73,7 +64,7 @@ const bookSlice = createSlice({
             state.status = 'loading'
         })
         .addCase(fetchData.fulfilled, (state, action) => {
-            state.status = 'completed'
+            state.status = null
             state.books = action.payload
         })
         .addCase(fetchData.rejected, (state) => {

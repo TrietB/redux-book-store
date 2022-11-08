@@ -74,13 +74,15 @@ const HomePage = () => {
         />
       </Stack>
       <div>
-        {status === 'loading' ? (
+        { 
+        status ? (
           <Box sx={{ textAlign: "center", color: "primary.main" }} >
             <ClipLoader color="inherit" size={150} loading={true} />
           </Box>
-        ) : (
+        ) : 
+         books ? (
           <Stack direction="row" spacing={2} justifyContent="space-around" flexWrap="wrap">
-            {books.map((book) => (
+            {books?.map((book) => (
               <Card
                 key={book.id} onClick={() => handleClickBook(book.id)}
                 sx={{
@@ -104,7 +106,7 @@ const HomePage = () => {
               </Card>
             ))}
           </Stack>
-        )}
+        ) : (<Alert severity="error">No book found</Alert>)}
       </div>
     </Container>
   );
